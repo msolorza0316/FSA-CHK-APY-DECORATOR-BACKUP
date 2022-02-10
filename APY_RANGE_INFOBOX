@@ -1,0 +1,35 @@
+{% if product.RATES.APY1.rawValue == NULL or product.RATES.APY1.rawValue == 0 %}
+N/A
+{% else %}
+  {% set val = product.RATES.APY1.rawValue|number_format(nicheProperties.DECIMAL_PLACES,","," ", true) %}
+  	{% set valArray = val|split(',') %}
+  		{% if product.RATES.APY2.rawValue == NULL or product.RATES.APY2.rawValue == 0 %}
+      {# exception for Save Debit Invest #}
+			{% if product.GENERAL.ID == "e0eacfa3-4cdd-423c-a7c9-c6d3ce764fc2"	%} Up to {% endif %}
+	  {# end of exception #}
+
+	{% if valArray[0] %}
+		{% if valArray[1] %}
+			{{ valArray[0] }}.{{ valArray[1] }}%
+		{% else %}
+			{{ valArray[0] }}00%
+		{% endif %}
+	{% endif %}
+
+      {% if product.RATES.APY1_MIN_EXCEPTION.rawValue != "" %}
+		<span class="table-popover" rel="popover" title="" data-placement="top" data-content="{{ product.RATES.APY1_MIN_EXCEPTION }}" ></span> {% endif %}
+  	  {% else %}
+		<span style="font-size:0.7em">Up to</span>
+      		{% if valArray[0] %}
+				{% if valArray[1] %}
+					{{ valArray[0] }}.{{ valArray[1] }}%
+			{% else %}
+					{{ valArray[0] }}00%
+				{% endif %}
+			{% endif %}
+     
+		{% if product.RATES.APY1_MIN_EXCEPTION.rawValue != "" %}
+			<span class="table-popover" rel="popover" title="" data-placement="top" data-content="{{ product.RATES.APY1_MIN_EXCEPTION }}" ></span>
+		{% endif %}
+  {% endif %}
+{% endif %}
